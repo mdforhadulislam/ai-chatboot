@@ -108,9 +108,9 @@ Inbound → Parse → Thread → AI → Reply
 | Auth        | JWT + bcrypt                 |
 
 ---
-
 ## 📁 Project Structure
 
+```txt
 backend/
 ├── prisma/
 │   ├── schema.prisma
@@ -125,7 +125,6 @@ backend/
 │   ├── queues/
 │   ├── modules/
 │   └── scripts/
-
 ---
 
 ## ⚙️ Installation
