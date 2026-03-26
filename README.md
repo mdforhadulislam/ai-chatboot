@@ -125,6 +125,7 @@ backend/
 │   ├── queues/
 │   ├── modules/
 │   └── scripts/
+```
 ---
 
 ## ⚙️ Installation
