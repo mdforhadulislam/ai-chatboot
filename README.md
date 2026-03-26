@@ -131,8 +131,9 @@ backend/
 ## ⚙️ Installation
 
 ### 1. Clone
+```
 git clone https://github.com/mdforhadulislam/ai-chatboot.git  
-cd ai-chatboot  
+cd ai-chatboot  ```
 
 ### 2. Install
 npm install  
