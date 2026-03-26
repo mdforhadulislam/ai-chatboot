@@ -137,10 +137,11 @@ cd ai-chatboot
 ```
 
 ### 2. Install
+```
 npm install  
-
+```
 ### 3. Setup .env
-
+```
 PORT=5000  
 DATABASE_URL=postgresql://postgres:password@localhost:5432/ai_chatbot  
 JWT_SECRET=supersecret  
@@ -156,36 +157,39 @@ RESEND_API_KEY=key
 EMAIL_FROM=support@yourdomain.com  
 
 REDIS_URL=redis://localhost:6379  
-
+```
 ---
 
 ### 4. Database
+```
 npx prisma generate  
 npx prisma migrate dev  
-
+```
 ### 5. Seed
+```
 npm run prisma:seed  
-
+```
 ### 6. Run
+```
 npm run start:dev  
-
+```
 ---
 
 ## 🌐 API URL
-
+```
 http://localhost:5000/api/v1  
-
+```
 ---
 
 ## 🔑 Auth APIs
-
+```
 POST /auth/register  
 POST /auth/login  
-
+```
 ---
 
 ## 📡 Webhooks
-
+```
 Meta  
 GET /webhooks/meta  
 POST /webhooks/meta  
@@ -196,13 +200,13 @@ POST /webhooks/whatsapp
 
 Email  
 POST /webhooks/email/inbound  
-
+```
 ---
 
 ## 📊 Dashboard
-
+```
 GET /dashboard/overview  
-
+```
 ---
 
 ## 🔐 Security
