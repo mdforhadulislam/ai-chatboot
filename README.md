@@ -110,7 +110,7 @@ Inbound → Parse → Thread → AI → Reply
 ---
 
 ## 📁 Project Structure
-
+---
 backend/
 ├── prisma/
 │   ├── schema.prisma
@@ -125,7 +125,7 @@ backend/
 │   ├── queues/
 │   ├── modules/
 │   └── scripts/
-
+---
 ---
 
 ## ⚙️ Installation
