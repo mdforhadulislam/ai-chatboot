@@ -1,50 +1,97 @@
-# 🚀 INBOCART AI / AI Chatbot Backend
+# 🚀 INBOCART AI – Multi-Channel AI Chatbot Backend
 
-AI-powered multi-channel chatbot system for automating customer communication across:
+> Build once → automate all customer communication
 
+INBOCART AI is a powerful backend system designed to automate business communication across multiple platforms using AI.
+
+Supports:
 - 📩 Facebook Messenger  
 - 📸 Instagram DM  
 - 💬 WhatsApp  
 - 📧 Email  
 
-Built with **NestJS + Prisma + PostgreSQL + OpenAI**
+---
+
+## 🎯 Purpose
+
+This system is designed for:
+
+✔ Courier / Logistics Business  
+✔ E-commerce Customer Support  
+✔ Service-based businesses  
+✔ Automated lead handling  
+✔ AI-powered support system  
 
 ---
 
 ## ✨ Features
 
 ### 🤖 AI Automation
-- Context-aware AI replies (Layer 2 logic)
-- No generic replies (direct answer system)
-- Business-aware responses using knowledge base
-- Bangla + English auto-detection
+- Context-aware AI replies  
+- Layer 2 smart reply system  
+- No generic replies  
+- Knowledge-base driven answers  
+- Bangla + English support  
+- Intent detection  
 
-### 💬 Multi-channel Messaging
-- Facebook Messenger automation
-- Instagram DM automation (via Meta)
-- WhatsApp Cloud API integration
-- Email auto-reply system
+---
+
+### 💬 Multi-Channel Messaging
+- Facebook Messenger automation  
+- Instagram DM automation  
+- WhatsApp Cloud API integration  
+- Email auto-reply system  
+
+---
 
 ### 👤 Customer System
-- Auto-create customer from messages
-- Unified multi-channel identity
-- Conversation history tracking
+- Auto-create customer  
+- Multi-channel identity  
+- Conversation history tracking  
+- Last activity tracking  
+
+---
 
 ### 📚 Knowledge Base
-- FAQ-based AI answers
-- Priority-based matching
-- Business rules integration
+- FAQ-based answers  
+- Business rules integration  
+- Priority-based matching  
+
+---
 
 ### 📊 Dashboard
-- Total customers
-- Conversations
-- Open vs resolved chats
-- Email threads
+- Total customers  
+- Conversations  
+- Open / Closed chats  
+- Email threads  
 
-### ⚡ Real-time + Scalable
-- Webhook-based system
-- Queue-ready architecture (BullMQ)
-- Async processing ready
+---
+
+## 🧠 AI Flow
+
+User Message  
+↓  
+Webhook Receive  
+↓  
+Normalize Data  
+↓  
+Save to Database  
+↓  
+AI Generate Reply  
+↓  
+Send Response  
+↓  
+Store Reply  
+
+---
+
+## 💬 Messaging Flow
+
+Messenger / WhatsApp  
+Webhook → Normalize → Save → AI → Reply  
+
+Email  
+Inbound → Parse → Thread → AI → Reply  
 
 ---
 
@@ -54,155 +101,143 @@ Built with **NestJS + Prisma + PostgreSQL + OpenAI**
 |-------------|------------------------------|
 | Backend     | NestJS (Node.js)             |
 | Database    | PostgreSQL + Prisma ORM      |
-| AI Engine   | OpenAI API                   |
+| AI          | OpenAI API                   |
 | Queue       | BullMQ + Redis               |
 | Email       | Resend API                   |
-| Messaging   | Meta Graph API + WhatsApp    |
+| Messaging   | Meta API + WhatsApp          |
 | Auth        | JWT + bcrypt                 |
 
 ---
 
 ## 📁 Project Structure
-backend/ ├── prisma/ │   ├── schema.prisma │   └── seed.ts │ ├── src/ │   ├── main.ts │   ├── app.module.ts │ │   ├── config/ │   ├── common/ │   ├── database/ │   ├── integrations/ │   ├── queues/ │   ├── modules/ │   └── scripts/
+
+backend/
+├── prisma/
+│   ├── schema.prisma
+│   └── seed.ts
+├── src/
+│   ├── main.ts
+│   ├── app.module.ts
+│   ├── config/
+│   ├── common/
+│   ├── database/
+│   ├── integrations/
+│   ├── queues/
+│   ├── modules/
+│   └── scripts/
 
 ---
 
-## ⚙️ Installation Guide
+## ⚙️ Installation
 
-### 1️⃣ Clone Repository
+### 1. Clone
+git clone https://github.com/mdforhadulislam/ai-chatboot.git  
+cd ai-chatboot  
 
-```bash
-git clone https://github.com/mdforhadulislam/ai-chatboot.git
-cd ai-chatboot
-2️⃣ Install Dependencies
-Bash
-npm install
-3️⃣ Setup Environment
-Create .env file:
-Environment
-PORT=5000
+### 2. Install
+npm install  
 
-DATABASE_URL=postgresql://postgres:password@localhost:5432/ai_chatbot
+### 3. Setup .env
 
-JWT_SECRET=supersecret
-JWT_EXPIRES_IN=7d
+PORT=5000  
+DATABASE_URL=postgresql://postgres:password@localhost:5432/ai_chatbot  
+JWT_SECRET=supersecret  
+OPENAI_API_KEY=your_key  
 
-OPENAI_API_KEY=your_openai_key
-OPENAI_MODEL=gpt-4.1-mini
+META_VERIFY_TOKEN=token  
+META_PAGE_ACCESS_TOKEN=token  
 
-META_VERIFY_TOKEN=your_token
-META_PAGE_ACCESS_TOKEN=your_page_token
+WHATSAPP_ACCESS_TOKEN=token  
+WHATSAPP_PHONE_NUMBER_ID=id  
 
-WHATSAPP_VERIFY_TOKEN=your_token
-WHATSAPP_ACCESS_TOKEN=your_token
-WHATSAPP_PHONE_NUMBER_ID=your_id
+RESEND_API_KEY=key  
+EMAIL_FROM=support@yourdomain.com  
 
-RESEND_API_KEY=your_resend_key
-EMAIL_FROM=support@yourdomain.com
+REDIS_URL=redis://localhost:6379  
 
-REDIS_URL=redis://localhost:6379
+---
 
-FRONTEND_URL=http://localhost:3000
-4️⃣ Setup Database
-Bash
-npx prisma generate
-npx prisma migrate dev
-5️⃣ Seed Database
-Bash
-npm run prisma:seed
-6️⃣ Run Server
-Bash
-npm run start:dev
-🌐 Server URL
+### 4. Database
+npx prisma generate  
+npx prisma migrate dev  
 
-http://localhost:5000/api/v1
-🔑 Authentication APIs
-Register
+### 5. Seed
+npm run prisma:seed  
 
-POST /auth/register
-Login
+### 6. Run
+npm run start:dev  
 
-POST /auth/login
-📡 Webhook Endpoints
-Meta (Messenger + Instagram)
+---
 
-GET  /webhooks/meta
-POST /webhooks/meta
-WhatsApp
+## 🌐 API URL
 
-GET  /webhooks/whatsapp
-POST /webhooks/whatsapp
-Email
+http://localhost:5000/api/v1  
 
-POST /webhooks/email/inbound
-🤖 AI Message Flow
+---
 
-User Message
-   ↓
-Webhook Receive
-   ↓
-Normalize Data
-   ↓
-Save to Database
-   ↓
-AI Generate Reply
-   ↓
-Send Reply to User
-   ↓
-Store AI Response
-💬 Messaging Flow
-Messenger / WhatsApp
+## 🔑 Auth APIs
 
-Webhook → Normalize → Save → AI → Reply
-Email
+POST /auth/register  
+POST /auth/login  
 
-Inbound → Parse → Thread → AI → Reply
-📧 Email System
-Thread-based conversation
-AI auto-reply
-Supports subject + reply tracking
-Ready for attachments (future)
-📊 Dashboard API
+---
 
-GET /dashboard/overview
-Returns:
-total customers
-conversations
-open conversations
-messages
-email threads
-🧠 AI Behavior
-Detects intent automatically
-Uses knowledge base
-Avoids generic replies
-Handles:
-Pricing queries
-Tracking queries
-Support queries
-Complaints
-🔐 Security
-JWT Authentication
-Password hashing (bcrypt)
-Environment-based secrets
-API token protection
-🧪 Development Tips
-Use Postman / Thunder Client
-Use ngrok for webhook testing
-Enable logs for debugging
-🚀 Deployment Guide
-Recommended setup:
-VPS (Ubuntu)
-Node.js (v18+)
-PM2 (process manager)
-Nginx (reverse proxy)
-SSL (Let's Encrypt)
-🔮 Future Improvements
-Queue-based async processing
-Admin panel (Next.js)
-Multi-tenant SaaS version
-Telegram integration
-Analytics dashboard
-File uploads (Cloudinary)
-👨‍💻 Author
-Forhadul Islam
-Founder – Faster International Express
+## 📡 Webhooks
+
+Meta  
+GET /webhooks/meta  
+POST /webhooks/meta  
+
+WhatsApp  
+GET /webhooks/whatsapp  
+POST /webhooks/whatsapp  
+
+Email  
+POST /webhooks/email/inbound  
+
+---
+
+## 📊 Dashboard
+
+GET /dashboard/overview  
+
+---
+
+## 🔐 Security
+
+- JWT Authentication  
+- bcrypt password hashing  
+- Environment config  
+
+---
+
+## 🚀 Deployment
+
+- VPS (Ubuntu)  
+- Node.js  
+- PM2  
+- Nginx  
+- SSL  
+
+---
+
+## 👨‍💻 Author
+
+Forhadul Islam  
+Founder – InboCart.Ai
+
+---
+
+## 📄 License
+
+MIT License  
+
+---
+
+## ⭐ Final Note
+
+✔ Automate business communication  
+✔ Handle all channels in one system  
+✔ AI-powered smart replies  
+
+🔥 Build once → automate everything
