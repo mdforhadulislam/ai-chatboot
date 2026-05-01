@@ -5,15 +5,39 @@ import { PrismaService } from '../../database/prisma.service';
 export class BusinessSettingsService {
   constructor(private prisma: PrismaService) {}
 
-  async getSettings(userId: string) {
-    return this.prisma.businessSettings.findUnique({ where: { userId } });
+  async getSettings(userId?: string) {
+    if (!userId) {
+      // Return default settings if no userID
+      return {
+        businessName: '',
+        businessEmail: '',
+        businessPhone: '',
+        address: '',
+        workingHours: '',
+        autoReplyEnabled: true,
+        aiModel: 'gpt-4.1-mini',
+        aiPrompt: '',
+      };
+    }
+    return this.prisma.businessSettings.findFirst({
+      where: { userId },
+    });
   }
 
   async updateSettings(userId: string, data: any) {
-    return this.prisma.businessSettings.upsert({
+    const existing = await this.prisma.businessSettings.findFirst({
       where: { userId },
-      update: data,
-      create: { userId, ...data },
     });
+
+    if (existing) {
+      return this.prisma.businessSettings.update({
+        where: { id: existing.id },
+        data,
+      });
+    } else {
+      return this.prisma.businessSettings.create({
+        data: { userId, ...data },
+      });
+    }
   }
 }

@@ -1,23 +1,24 @@
-import { Controller, Get, Put, Body, UseGuards } from '@nestjs/common';
+import { Controller, Get, Put, Post, Delete, Body, Param, Query, UseGuards, Req } from '@nestjs/common';
 import { BusinessSettingsService } from './business-settings.service';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
-import { CurrentUser } from '../../common/decorators/current-user.decorator';
-import { successResponse } from '../../common/utils/response.util';
 
 @Controller('business-settings')
 @UseGuards(JwtAuthGuard)
 export class BusinessSettingsController {
-  constructor(private settingsService: BusinessSettingsService) {}
+  constructor(private businessSettingsService: BusinessSettingsService) {}
 
   @Get()
-  async getSettings(@CurrentUser('id') userId: string) {
-    const data = await this.settingsService.getSettings(userId);
-    return successResponse(data);
+  async getSettings(@Req() req: any) {
+    const userId = req.user?.sub;
+    return this.businessSettingsService.getSettings(userId);
   }
 
   @Put()
-  async updateSettings(@CurrentUser('id') userId: string, @Body() body: any) {
-    const data = await this.settingsService.updateSettings(userId, body);
-    return successResponse(data, 'Settings updated');
+  async updateSettings(@Req() req: any, @Body() data: any) {
+    const userId = req.user?.sub;
+    if (!userId) {
+      return { success: false, message: 'User not found' };
+    }
+    return this.businessSettingsService.updateSettings(userId, data);
   }
 }

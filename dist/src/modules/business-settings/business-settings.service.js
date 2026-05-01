@@ -17,14 +17,38 @@ let BusinessSettingsService = class BusinessSettingsService {
         this.prisma = prisma;
     }
     async getSettings(userId) {
-        return this.prisma.businessSettings.findUnique({ where: { userId } });
+        if (!userId) {
+            // Return default settings if no userID
+            return {
+                businessName: '',
+                businessEmail: '',
+                businessPhone: '',
+                address: '',
+                workingHours: '',
+                autoReplyEnabled: true,
+                aiModel: 'gpt-4.1-mini',
+                aiPrompt: '',
+            };
+        }
+        return this.prisma.businessSettings.findFirst({
+            where: { userId },
+        });
     }
     async updateSettings(userId, data) {
-        return this.prisma.businessSettings.upsert({
+        const existing = await this.prisma.businessSettings.findFirst({
             where: { userId },
-            update: data,
-            create: { userId, ...data },
         });
+        if (existing) {
+            return this.prisma.businessSettings.update({
+                where: { id: existing.id },
+                data,
+            });
+        }
+        else {
+            return this.prisma.businessSettings.create({
+                data: { userId, ...data },
+            });
+        }
     }
 };
 exports.BusinessSettingsService = BusinessSettingsService;

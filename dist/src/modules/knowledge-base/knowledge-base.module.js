@@ -6,18 +6,18 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.BusinessSettingsModule = void 0;
+exports.KnowledgeBaseModule = void 0;
 const common_1 = require("@nestjs/common");
-const business_settings_controller_1 = require("./business-settings.controller");
-const business_settings_service_1 = require("./business-settings.service");
-let BusinessSettingsModule = class BusinessSettingsModule {
+const knowledge_base_controller_1 = require("./knowledge-base.controller");
+const knowledge_base_service_1 = require("./knowledge-base.service");
+let KnowledgeBaseModule = class KnowledgeBaseModule {
 };
-exports.BusinessSettingsModule = BusinessSettingsModule;
-exports.BusinessSettingsModule = BusinessSettingsModule = __decorate([
+exports.KnowledgeBaseModule = KnowledgeBaseModule;
+exports.KnowledgeBaseModule = KnowledgeBaseModule = __decorate([
     (0, common_1.Module)({
-        controllers: [business_settings_controller_1.BusinessSettingsController],
-        providers: [business_settings_service_1.BusinessSettingsService],
-        exports: [business_settings_service_1.BusinessSettingsService],
+        controllers: [knowledge_base_controller_1.KnowledgeBaseController],
+        providers: [knowledge_base_service_1.KnowledgeBaseService],
+        exports: [knowledge_base_service_1.KnowledgeBaseService],
     })
-], BusinessSettingsModule);
-//# sourceMappingURL=business-settings.module.js.map
+], KnowledgeBaseModule);
+//# sourceMappingURL=knowledge-base.module.js.map

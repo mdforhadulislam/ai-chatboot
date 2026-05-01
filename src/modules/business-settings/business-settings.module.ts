@@ -5,5 +5,6 @@ import { BusinessSettingsService } from './business-settings.service';
 @Module({
   controllers: [BusinessSettingsController],
   providers: [BusinessSettingsService],
+  exports: [BusinessSettingsService],
 })
 export class BusinessSettingsModule {}

@@ -12,6 +12,7 @@ import { MessagesModule } from './modules/messages/messages.module';
 import { AiModule } from './modules/ai/ai.module';
 import { WebhooksModule } from './modules/webhooks/webhooks.module';
 import { BusinessSettingsModule } from './modules/business-settings/business-settings.module';
+import { KnowledgeBaseModule } from './modules/knowledge-base/knowledge-base.module';
 import { SocketModule } from './gateways/socket.module';
 import { MetaModule } from './integrations/meta/meta.module';
 import { WhatsAppModule } from './integrations/whatsapp/whatsapp.module';
@@ -49,6 +50,7 @@ const throttlerGuard: Provider = {
     AiModule,
     WebhooksModule,
     BusinessSettingsModule,
+    KnowledgeBaseModule,
     SocketModule,
     MetaModule,
     WhatsAppModule,

@@ -16,35 +16,36 @@ exports.BusinessSettingsController = void 0;
 const common_1 = require("@nestjs/common");
 const business_settings_service_1 = require("./business-settings.service");
 const jwt_auth_guard_1 = require("../../common/guards/jwt-auth.guard");
-const current_user_decorator_1 = require("../../common/decorators/current-user.decorator");
-const response_util_1 = require("../../common/utils/response.util");
 let BusinessSettingsController = class BusinessSettingsController {
-    constructor(settingsService) {
-        this.settingsService = settingsService;
+    constructor(businessSettingsService) {
+        this.businessSettingsService = businessSettingsService;
     }
-    async getSettings(userId) {
-        const data = await this.settingsService.getSettings(userId);
-        return (0, response_util_1.successResponse)(data);
+    async getSettings(req) {
+        const userId = req.user?.sub;
+        return this.businessSettingsService.getSettings(userId);
     }
-    async updateSettings(userId, body) {
-        const data = await this.settingsService.updateSettings(userId, body);
-        return (0, response_util_1.successResponse)(data, 'Settings updated');
+    async updateSettings(req, data) {
+        const userId = req.user?.sub;
+        if (!userId) {
+            return { success: false, message: 'User not found' };
+        }
+        return this.businessSettingsService.updateSettings(userId, data);
     }
 };
 exports.BusinessSettingsController = BusinessSettingsController;
 __decorate([
     (0, common_1.Get)(),
-    __param(0, (0, current_user_decorator_1.CurrentUser)('id')),
+    __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], BusinessSettingsController.prototype, "getSettings", null);
 __decorate([
     (0, common_1.Put)(),
-    __param(0, (0, current_user_decorator_1.CurrentUser)('id')),
+    __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], BusinessSettingsController.prototype, "updateSettings", null);
 exports.BusinessSettingsController = BusinessSettingsController = __decorate([

@@ -23,12 +23,25 @@ let AiService = AiService_1 = class AiService {
         this.configService = configService;
         this.prisma = prisma;
         this.logger = new common_1.Logger(AiService_1.name);
-        this.openai = new openai_1.default({
-            apiKey: this.configService.get('OPENAI_API_KEY'),
-        });
+        this.useMock = true;
+        // const apiKey = "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"
+        // const apiKey = 'sk-abcdefabcdefabcdefabcdefabcdefabcdef12'
+        const apiKey = "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";
+        this.useMock = !apiKey || apiKey.includes('your_') || apiKey.includes('dummy');
+        if (!this.useMock) {
+            this.openai = new openai_1.default({
+                apiKey: apiKey,
+            });
+        }
+        else {
+            this.logger.warn('Using MOCK AI mode - no valid API key found');
+        }
     }
     async generateReply(message, conversationId) {
         try {
+            if (this.useMock) {
+                return this.generateMockReply(message);
+            }
             const knowledgeBase = await this.prisma.knowledgeBase.findMany({
                 where: { isActive: true },
                 orderBy: { priority: 'desc' },
@@ -79,21 +92,52 @@ Provide concise, helpful, and context-aware responses. If you don't know the ans
         }
         catch (error) {
             this.logger.error('Error generating AI reply', error);
+            if (error?.status === 401) {
+                this.logger.warn('OpenAI API key invalid - switching to MOCK mode');
+                this.useMock = true;
+                return this.generateMockReply(message);
+            }
             return 'Sorry, I am having trouble processing your request. Please try again later.';
         }
+    }
+    generateMockReply(message) {
+        const responses = {
+            'hello': 'Hello! How can I help you today?',
+            'hi': 'Hi there! Welcome to our support. How can I assist you?',
+            'help': 'I\'m here to help! Please let me know what you need assistance with.',
+            'price': 'Our pricing information is available on our website. Would you like me to connect you with a human agent for detailed pricing?',
+            'hours': 'Our working hours are typically Monday-Friday 9AM-5PM. Is there something specific you need help with?',
+            'thanks': 'You\'re welcome! Is there anything else I can help you with?',
+            'bye': 'Goodbye! Feel free to reach out anytime you need assistance.',
+        };
+        const lowerMessage = message.toLowerCase();
+        for (const [key, response] of Object.entries(responses)) {
+            if (lowerMessage.includes(key)) {
+                return response;
+            }
+        }
+        return `Thank you for your message: "${message}". I'm currently in demo mode. A human agent will respond shortly. Alternatively, you can ask about: hello, help, price, hours, etc.`;
     }
     async generateReplyWithContext(message, conversationId, customContext) {
         const baseReply = await this.generateReply(message, conversationId);
         if (customContext) {
-            const enhancedPrompt = `Based on this context: ${customContext}\n\nProvide a response to: ${message}`;
-            const completion = await this.openai.chat.completions.create({
-                model: this.configService.get('OPENAI_MODEL') || 'gpt-4.1-mini',
-                messages: [
-                    { role: 'system', content: 'You are a helpful assistant.' },
-                    { role: 'user', content: enhancedPrompt },
-                ],
-            });
-            return completion.choices[0]?.message?.content || baseReply;
+            if (this.useMock) {
+                return `Based on: ${customContext}\n\n${baseReply}`;
+            }
+            try {
+                const enhancedPrompt = `Based on this context: ${customContext}\n\nProvide a response to: ${message}`;
+                const completion = await this.openai.chat.completions.create({
+                    model: this.configService.get('OPENAI_MODEL') || 'gpt-4.1-mini',
+                    messages: [
+                        { role: 'system', content: 'You are a helpful assistant.' },
+                        { role: 'user', content: enhancedPrompt },
+                    ],
+                });
+                return completion.choices[0]?.message?.content || baseReply;
+            }
+            catch (error) {
+                return baseReply;
+            }
         }
         return baseReply;
     }

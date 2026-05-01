@@ -21,6 +21,7 @@ const messages_module_1 = require("./modules/messages/messages.module");
 const ai_module_1 = require("./modules/ai/ai.module");
 const webhooks_module_1 = require("./modules/webhooks/webhooks.module");
 const business_settings_module_1 = require("./modules/business-settings/business-settings.module");
+const knowledge_base_module_1 = require("./modules/knowledge-base/knowledge-base.module");
 const socket_module_1 = require("./gateways/socket.module");
 const meta_module_1 = require("./integrations/meta/meta.module");
 const whatsapp_module_1 = require("./integrations/whatsapp/whatsapp.module");
@@ -60,6 +61,7 @@ exports.AppModule = AppModule = __decorate([
             ai_module_1.AiModule,
             webhooks_module_1.WebhooksModule,
             business_settings_module_1.BusinessSettingsModule,
+            knowledge_base_module_1.KnowledgeBaseModule,
             socket_module_1.SocketModule,
             meta_module_1.MetaModule,
             whatsapp_module_1.WhatsAppModule,
