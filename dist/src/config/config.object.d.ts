@@ -1,0 +1,21 @@
+declare const _default: () => {
+    PORT: number;
+    DATABASE_URL: string | undefined;
+    JWT_SECRET: string | undefined;
+    JWT_EXPIRES_IN: string;
+    OPENAI_API_KEY: string | undefined;
+    OPENAI_MODEL: string;
+    META_VERIFY_TOKEN: string | undefined;
+    META_PAGE_ACCESS_TOKEN: string | undefined;
+    WHATSAPP_VERIFY_TOKEN: string | undefined;
+    WHATSAPP_ACCESS_TOKEN: string | undefined;
+    WHATSAPP_PHONE_NUMBER_ID: string | undefined;
+    RESEND_API_KEY: string | undefined;
+    EMAIL_FROM: string | undefined;
+    REDIS_URL: string | undefined;
+    FRONTEND_URL: string | undefined;
+    THROTTLE_TTL: number;
+    THROTTLE_LIMIT: number;
+    CORS_ORIGINS: string | undefined;
+};
+export default _default;

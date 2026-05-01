@@ -1,1 +1,107 @@
+generator client {
+  provider = "prisma-client-js"
+}
 
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String?
+  resetToken      String?   @unique
+  resetTokenExpiry DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  businessSettings BusinessSettings?
+  assignedConversations Conversation[] @relation("AssignedAgent")
+}
+
+model Conversation {
+  id          String    @id @default(uuid())
+  customerId  String
+  channel     String
+  status      String    @default("open")
+  assignedTo  String?   // Agent ID
+  handoffTo   String?   // Human agent requested
+  lastMessage String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  customer     Customer  @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  messages     Message[]
+  assignedAgent User?     @relation("AssignedAgent", fields: [assignedTo], references: [id], onDelete: SetNull)
+}
+
+model Customer {
+  id            String   @id @default(uuid())
+  email         String?
+  phone         String?
+  facebookId    String?  @unique
+  instagramId   String?  @unique
+  whatsappId    String?  @unique
+  name          String?
+  channel       String   @default("web")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  conversations Conversation[]
+}
+
+model Message {
+  id             String   @id @default(uuid())
+  conversationId String
+  content        String
+  direction      String
+  channel        String
+  senderId       String?
+  metadata       Json?
+  createdAt      DateTime @default(now())
+
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  attachments  Attachment[]
+}
+
+model Attachment {
+  id          String   @id @default(uuid())
+  messageId   String?
+  fileName    String
+  fileUrl     String
+  fileType    String?
+  fileSize    Int?
+  createdAt   DateTime @default(now())
+
+  message Message? @relation(fields: [messageId], references: [id], onDelete: Cascade)
+}
+
+model KnowledgeBase {
+  id        String   @id @default(uuid())
+  question  String
+  answer    String   @db.Text
+  category  String?
+  priority  Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model BusinessSettings {
+  id                String   @id @default(uuid())
+  userId            String   @unique
+  businessName      String?
+  businessEmail     String?
+  businessPhone     String?
+  address           String?
+  workingHours      String?
+  autoReplyEnabled  Boolean  @default(true)
+  aiModel           String   @default("gpt-4.1-mini")
+  aiPrompt          String?  @db.Text
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
